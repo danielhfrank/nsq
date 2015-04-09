@@ -170,7 +170,11 @@ func (g *GraphOptions) Prefix(host string, metricType string) string {
 		prefixWithHost += "."
 	}
 	if g.ctx.nsqadmin.opts.UseStatsdPrefixes && metricType == "counter" {
-		prefix += "stats_counts."
+		if g.ctx.nsqadmin.opts.UseStatsdStatsCounts {
+			prefix += "stats_counts."
+		} else {
+			prefix += "stats."
+		}
 	} else if g.ctx.nsqadmin.opts.UseStatsdPrefixes && metricType == "gauge" {
 		prefix += "stats.gauges."
 	}
@@ -220,7 +224,7 @@ func (g *GraphOptions) LargeGraph(gr GraphTarget, key string) template.URL {
 	for _, target := range targets {
 		target = fmt.Sprintf(target, g.Prefix(gr.Host(), metricType(key)))
 		target = fmt.Sprintf(`summarize(%s,"%s","avg")`, target, interval)
-		if metricType(key) == "counter" {
+		if metricType(key) == "counter" && g.ctx.nsqadmin.opts.UseStatsdStatsCounts {
 			scale := fmt.Sprintf("%.04f", 1/float64(*statsdInterval/time.Second))
 			target = fmt.Sprintf(`scale(%s,%s)`, target, scale)
 		}

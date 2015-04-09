@@ -12,9 +12,10 @@ type nsqadminOptions struct {
 	GraphiteURL   string `flag:"graphite-url"`
 	ProxyGraphite bool   `flag:"proxy-graphite"`
 
-	UseStatsdPrefixes bool          `flag:"use-statsd-prefixes"`
-	StatsdPrefix      string        `flag:"statsd-prefix"`
-	StatsdInterval    time.Duration `flag:"statsd-interval"`
+	UseStatsdPrefixes    bool          `flag:"use-statsd-prefixes"`
+	UseStatsdStatsCounts bool          `flag:"use-statsd-stats-counts"`
+	StatsdPrefix         string        `flag:"statsd-prefix"`
+	StatsdInterval       time.Duration `flag:"statsd-interval"`
 
 	NSQLookupdHTTPAddresses []string `flag:"lookupd-http-address" cfg:"nsqlookupd_http_addresses"`
 	NSQDHTTPAddresses       []string `flag:"nsqd-http-address" cfg:"nsqd_http_addresses"`
